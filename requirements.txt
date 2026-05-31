@@ -1,0 +1,12 @@
+pandas
+
+pydantic
+pydantic-settings
+
+SQLAlchemy
+psycopg2-binary
+python-dotenv
+PyYAML
+requests
+
+pytest
