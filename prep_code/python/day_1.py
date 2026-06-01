@@ -1,50 +1,47 @@
-import requests
-from typing import Any
+import json
+from pathlib import Path
+
+from nova.src.ingestion import fetch_transactions
+from nova.src.validation import validate_transactions
 
 
-def fetch_transactions(url: str, timeout: int = 5) -> list[dict[str, Any]]:
-    """
-    Fetch raw transaction data from an API.
+URL = "https://jsonplaceholder.typicode.com/posts"
 
-    Parameters
-    ----------
-    url : str
-        API endpoint returning JSON transaction records.
-    timeout : int
-        Request timeout in seconds.
 
-    Returns
-    -------
-    list[dict]
-        Raw transaction records.
-    """
+def save_json(data: list, file_path: Path) -> None:
 
-    try:
-        response = requests.get(url, timeout=timeout)
+    file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Raise exception for 4xx/5xx responses
-        response.raise_for_status()
+    with open(file_path, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4)
 
-        data = response.json()
 
-        if not isinstance(data, list):
-            raise ValueError("Expected API to return a list of records")
+def run_pipeline() -> None:
 
-        return data
+    print("Fetching data...")
 
-    except requests.exceptions.Timeout:
-        print("Request timed out")
-        raise
+    records = fetch_transactions(URL)
 
-    except requests.exceptions.ConnectionError:
-        print("Failed to connect to API")
-        raise
+    print(f"Fetched {len(records)} records")
 
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        raise
+    valid_records, invalid_records = validate_transactions(records)
 
-    except ValueError as e:
-        print(f"Invalid JSON response: {e}")
-        raise
+    print(f"Valid Records: {len(valid_records)}")
+    print(f"Invalid Records: {len(invalid_records)}")
 
+    save_json(
+        valid_records,
+        Path("nova/data/validated/transactions.json")
+    )
+
+    save_json(
+        invalid_records,
+        Path("nova/data/rejected/rejected_transactions.json")
+    )
+
+    print("Saved validated records")
+    print("Saved rejected records")
+
+
+if __name__ == "__main__":
+    run_pipeline()
