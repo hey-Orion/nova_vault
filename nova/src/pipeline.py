@@ -3,7 +3,9 @@ from pathlib import Path
 
 from nova.src.ingestion import fetch_data
 from nova.src.validation import validate_records
+from nova.src.logger import get_logger
 
+logger = get_logger(__name__)
 
 URL = "https://dummyjson.com/carts"
 
@@ -18,16 +20,18 @@ def save_json(data: list, file_path: Path) -> None:
 
 def run_pipeline() -> None:
 
-    print("Fetching data...")
+    logger.info("Pipeline started")
+
+    logger.info("Fetching data...")
 
     records = fetch_data(URL)
 
-    print(f"Fetched {len(records)} records")
+    logger.info(f"Fetched {len(records)} records")
 
     valid_records, invalid_records = validate_records(records)
 
-    print(f"Valid Records: {len(valid_records)}")
-    print(f"Invalid Records: {len(invalid_records)}")
+    logger.info(f"Valid Records: {len(valid_records)}")
+    logger.info(f"Invalid Records: {len(invalid_records)}")
 
     save_json(
         valid_records,
@@ -39,8 +43,10 @@ def run_pipeline() -> None:
         Path("nova/data/rejected/rejected_records.json")
     )
 
-    print("Saved validated records")
-    print("Saved rejected records")
+    logger.info("Saved validated records")
+    logger.info("Saved rejected records")
+
+    logger.info("pipeline completed successfully")
 
 
 if __name__ == "__main__":
