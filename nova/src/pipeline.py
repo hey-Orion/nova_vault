@@ -1,11 +1,11 @@
 import json
 from pathlib import Path
 
-from nova.src.ingestion import fetch_transactions
-from nova.src.validation import validate_transactions
+from nova.src.ingestion import fetch_data
+from nova.src.validation import validate_records
 
 
-URL = "https://jsonplaceholder.typicode.com/posts"
+URL = "https://dummyjson.com/carts"
 
 
 def save_json(data: list, file_path: Path) -> None:
@@ -20,23 +20,23 @@ def run_pipeline() -> None:
 
     print("Fetching data...")
 
-    records = fetch_transactions(URL)
+    records = fetch_data(URL)
 
     print(f"Fetched {len(records)} records")
 
-    valid_records, invalid_records = validate_transactions(records)
+    valid_records, invalid_records = validate_records(records)
 
     print(f"Valid Records: {len(valid_records)}")
     print(f"Invalid Records: {len(invalid_records)}")
 
     save_json(
         valid_records,
-        Path("nova/data/validated/transactions.json")
+        Path("nova/data/validated/records.json")
     )
 
     save_json(
         invalid_records,
-        Path("nova/data/rejected/rejected_transactions.json")
+        Path("nova/data/rejected/rejected_records.json")
     )
 
     print("Saved validated records")

@@ -1,14 +1,17 @@
 from pydantic import ValidationError
 
-from nova.models.pydantic_models import Transaction
+from nova.models.pydantic_models import Cart
 
-def validate_transactions(records: list[dict]) -> tuple[list, list]:
+
+def validate_records(records: list[dict]) -> tuple[list, list]:
+
+
     valid_records = []
     invalid_records = []
 
     for record in records:
         try:
-            validated_record = Transaction(**record)
+            validated_record = Cart(**record)
 
             valid_records.append(
                 validated_record.model_dump()
@@ -23,4 +26,3 @@ def validate_transactions(records: list[dict]) -> tuple[list, list]:
             )
 
     return valid_records, invalid_records
-    

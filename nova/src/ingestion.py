@@ -2,7 +2,7 @@ import requests
 from typing import Any
 
 
-def fetch_transactions(url: str, timeout: int = 5) -> list[dict[str, Any]]:
+def fetch_data(url: str, timeout: int = 5) -> list[dict[str, Any]]:
 
     try:
         response = requests.get(url, timeout=timeout)
@@ -11,10 +11,19 @@ def fetch_transactions(url: str, timeout: int = 5) -> list[dict[str, Any]]:
 
         data = response.json()
 
-        if not isinstance(data, list):
-            raise ValueError("Expected API to return a list of records")
+        # Direct list response
+        if isinstance(data, list):
+            return data
 
-        return data
+        # DummyJSON style response
+        if isinstance(data, dict):
+
+            if "carts" in data:
+                return data["carts"]
+
+        raise ValueError(
+            "Could not find a valid list of records"
+        )
 
     except requests.exceptions.Timeout:
         print("Request timed out")
@@ -24,10 +33,6 @@ def fetch_transactions(url: str, timeout: int = 5) -> list[dict[str, Any]]:
         print("Failed to connect to API")
         raise
 
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        raise
-
     except ValueError as e:
-        print(f"Invalid JSON response: {e}")
+        print(f"Invalid response: {e}")
         raise
