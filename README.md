@@ -1,1 +1,2 @@
-# nova is a learning program designed in a form of a working data pipeline project. 
+# nova is a learning program. 
+Designed like a working data pipeline project. 
