@@ -2,7 +2,7 @@ import os
 import logging 
 from pathlib import Path
 from dotenv import load_dotenv
-from nova.config.settings import config
+from config.settings import config
 
 load_dotenv()
 

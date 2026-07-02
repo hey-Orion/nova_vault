@@ -13,3 +13,7 @@ venv/
 # Logs
 logs/
 !.gitkeep
+
+#Data
+data/
+!.gitkeep

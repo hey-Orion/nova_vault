@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 
-from nova.models.pydantic_models import Cart
+from models.pydantic_models import Cart
 
 
 def validate_records(records: list[dict]) -> tuple[list, list]:

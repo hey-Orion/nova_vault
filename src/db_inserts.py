@@ -1,5 +1,5 @@
-from nova.src.database import SessionLocal
-from nova.models.sqlalchemy_models import Cart, Product
+from src.database import SessionLocal
+from models.sqlalchemy_models import Cart, Product
 
 
 def load_carts(records: list[dict]) -> None:

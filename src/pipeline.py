@@ -4,12 +4,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from nova.src.ingestion import fetch_data
-from nova.src.validation import validate_records
-from nova.src.db_inserts import load_carts
-from nova.src.logger import get_logger
+from src.ingestion import fetch_data
+from src.validation import validate_records
+from src.db_inserts import load_carts
+from src.logger import get_logger
 
-from nova.config.settings import config
+from config.settings import config
 
 
 load_dotenv()

@@ -1,6 +1,6 @@
 from unittest.mock import Mock, patch
 
-from nova.src.ingestion import fetch_data
+from src.ingestion import fetch_data
 
 
 @patch("nova.src.ingestion.requests.get")

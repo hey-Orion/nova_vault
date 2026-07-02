@@ -1,4 +1,4 @@
-from nova.src.validation import validate_records
+from src.validation import validate_records
 
 
 def test_validate_records_success():

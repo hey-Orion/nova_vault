@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from nova.models.sqlalchemy_models import Base
+from models.sqlalchemy_models import Base
 
 from dotenv import load_dotenv
 
